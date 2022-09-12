@@ -1,5 +1,9 @@
 import { useState } from 'react'
-import { RegexCounter } from './components/RegexCounter'
+import { InputGrid } from './components/InputGrid';
+import { autoFocus } from './components/InputGrid';
+import { formatTable } from './components/formatTable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 function App() {
@@ -18,40 +22,68 @@ function App() {
         );
       }
 
-      let data = await response.json();
+      let results = await response.json();
 
-      setData(data);
+      setData(results);
       setError(null);
 
+      setTimeout(autoFocus, 1)
     } catch(err) {
       setError(err.message);
       setData(null);
     }
   };
 
-  const vowelsRegex = /[aáàãâeéêiíoóõôuú]/gi;
-  const consonantsRegex = /[bcçdfghjklmnpqrstvwxyz]/gi;
-  const [text, setText] = useState("");
-  const handleInputChange = (event) => {
-    setText(event.target.value);
+  const [tries, setTries] = useState([]);
+
+  const tryGuess = () => {
+    let letterInputs = document.querySelectorAll(".guess");
+    let currentTry = [];
+
+    for (let input of letterInputs) {
+      currentTry.push(input.value);
+    }
+
+    setTries([...tries, currentTry]);
+
+    setTimeout(formatTable, 1);
   };
+
 
   return (
     <div className="App">
       <h1>Jogo da Senha</h1>
-      {error && (
-        <div>{`Ocorreu um erro ao executar o fetch dos dados - ${error}`}</div>
+      {error && <div>{`Ocorreu um erro ao executar o fetch dos dados - ${error}`}</div>}
+      <button onClick={fetchRandomWord}>Nova Palavra</button>
+      {data && (
+        <div>
+          {data.word}
+          <InputGrid letters={data.word.split("")} />
+          <button onClick={tryGuess}><FontAwesomeIcon icon={faCheck} /></button>
+        </div>
       )}
-      <button onClick={fetchRandomWord}>oi</button>
-      {data && <div>{data.word}</div>}
-      <h3></h3>
-      <input type="text" value={text} placeholder="Insira a palavra-chave" onChange={handleInputChange} />
-      <RegexCounter
-        title="Vogais" text={text} regex={vowelsRegex}
-      />
-      <RegexCounter
-        title="Consoantes" text={text} regex={consonantsRegex}
-      />
+      {tries.length > 0 && (
+        <div>
+          <h3>Tentativas</h3>
+          <table>
+            <tbody>
+              {tries.map((currentTry, index) => {
+                return (
+                  <tr key={index} className="row">
+                    {currentTry.map((letter, index) => {
+                      return (
+                        <td key={index} className="cell">
+                          {letter}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
