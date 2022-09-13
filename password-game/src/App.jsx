@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { InputGrid } from './components/InputGrid';
+import { clearInputs } from './components/InputGrid';
 import { autoFocus } from './components/InputGrid';
 import { formatTable } from './components/formatTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 function App() {
@@ -31,7 +32,10 @@ function App() {
       setData(results);
       setError(null);
 
-      setTimeout(autoFocus, 1)
+      setTries([]);
+
+      setTimeout(clearInputs, 1);
+      setTimeout(autoFocus, 1);
     } catch(err) {
       setError(err.message);
       setData(null);
@@ -41,18 +45,50 @@ function App() {
   const [tries, setTries] = useState([]);
 
   const tryGuess = () => {
-    let letterInputs = document.querySelectorAll(".guess");
+    let letterInputs = document.querySelectorAll(".input-letter");
     let currentTry = [];
 
+    let emptyInput = false;
+
     for (let input of letterInputs) {
-      currentTry.push(input.value);
+      if (input.value === "") {
+        emptyInput = true;
+        break;
+      }
     }
 
-    setTries([...tries, currentTry]);
+    if (emptyInput) {
+      alert("Preencha todas as letras antes de fazer uma tentativa.");
+    } else {
+      for (let input of letterInputs) {
+        currentTry.push(input.value);
+      }
 
-    setTimeout(formatTable, 1);
+      setTries([...tries, currentTry]);
+
+      setTimeout(formatTable, 1);
+      setTimeout(checkWin, 100);
+    }
   };
 
+  const checkWin = () => {
+    let rows = document.querySelectorAll(".row");
+    let cells = rows[rows.length - 1].children;
+
+    let allCorrect = true;
+
+    for (let cell of cells) {
+      if (!cell.classList.contains("bull")) {
+        allCorrect = false;
+        break;
+      }
+    }
+
+    if (allCorrect) {
+      clearInputs();
+      alert("Parabéns! Você descobriu a palavra!");
+    }
+  };
 
   return (
     <div className="App">
@@ -60,10 +96,11 @@ function App() {
       {error && <div>{`Ocorreu um erro ao executar o fetch dos dados - ${error}`}</div>}
       <button onClick={fetchRandomWord}>Nova Palavra</button>
       {data && (
-        <div>
-          {data.word}
+        <div className="input-area">
           <InputGrid letters={data.word.split("")} />
-          <button onClick={tryGuess}><FontAwesomeIcon icon={faCheck} /></button>
+          <button onClick={tryGuess} className="input-button">
+            <FontAwesomeIcon icon={faCheck} />
+          </button>
         </div>
       )}
       {tries.length > 0 && (
@@ -86,6 +123,13 @@ function App() {
               })}
             </tbody>
           </table>
+          <button className="help-button" onClick={() => {
+            alert(
+              "Você deve descobrir qual a palavra secreta na base da tentativa e erro.\n\nCélulas verdes significam que a letra correta está na posição correta.\nAs vermelhas significam que, apesar da palavra possuir tal letra, ela não se encontra na posição correta.\nPor fim, as células cinzas significam que esta letra não está na palavra secreta."
+            )
+          }}>
+            <FontAwesomeIcon icon={faCircleQuestion} />
+          </button>
         </div>
       )}
     </div>

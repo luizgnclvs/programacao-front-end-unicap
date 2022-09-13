@@ -5,10 +5,17 @@
   text-align: center;
 }
 
-.App {
+.App, .input-area {
   display: flex;
-  flex-direction: column;
   align-items: center;
+}
+
+.App {
+  flex-direction: column;
+}
+
+.input-area {
+  margin: 20px 0;
 }
 
 input {
@@ -16,28 +23,36 @@ input {
   caret-color: transparent;
 }
 
-.grid {
+.input-grid {
   display: grid;
   grid-template-rows: calc(1fr - 2px);
   gap: 5px;
 }
 
-.guess, td {
+.input-letter, td {
   width: 25px;
   height: 25px;
   font-size: 1.5rem;
-  text-transform: uppercase;
   text-align: center;
   border: 3px solid #888;
+  border-radius: 3px;
 }
 
-.guess:focus {
+.input-letter, button, td {
+  text-transform: uppercase;
+}
+
+.input-letter:focus {
   border: 3px solid red;
   transform: translateY(-1px);
 }
 
-button {
-  text-transform: uppercase;
+.input-button {
+  margin: 0 0 0 10px;
+}
+
+.help-button {
+  margin: 15px 0;
 }
 
 .bull {

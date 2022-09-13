@@ -18,7 +18,7 @@ const matchRegex = (char) => {
 
 export const formatTable = () => {
     let rows = document.querySelectorAll(".row");
-    let inputs = document.querySelectorAll(".guess");
+    let inputs = document.querySelectorAll(".input-letter");
 
     for (let row of rows) {
         let cellElements = row.children;
@@ -73,6 +73,10 @@ export const formatTable = () => {
                         }
                     } else {
                         continue;
+                    }
+                } else {
+                    if (letter.position === cell.position) {
+                        break;
                     }
                 }
             }
