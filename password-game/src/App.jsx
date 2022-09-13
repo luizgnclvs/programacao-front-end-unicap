@@ -24,6 +24,10 @@ function App() {
 
       let results = await response.json();
 
+      if (results.word.match(/-/)) {
+        fetchRandomWord();
+      }
+
       setData(results);
       setError(null);
 

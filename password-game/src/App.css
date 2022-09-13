@@ -16,8 +16,6 @@ input {
   caret-color: transparent;
 }
 
-inputsele
-
 .grid {
   display: grid;
   grid-template-rows: calc(1fr - 2px);
