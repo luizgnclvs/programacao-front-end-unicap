@@ -4,4 +4,4 @@ Exercícios propostos pelo professor ao decorrer da disciplina de Programação 
 
 ### Índice
 
-- Jogo de Senha ---> [DEPLOY]()
+- Jogo de Senha ---> [DEPLOY](https://password-game.vercel.app/)
