@@ -16,6 +16,10 @@
 
 .input-area {
   margin: 20px 0;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  background-color: #242424;
 }
 
 input {

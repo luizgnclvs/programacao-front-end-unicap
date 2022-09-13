@@ -27,7 +27,7 @@ export const formatTable = () => {
         let letters = [];
 
         for (let i = 0; i < cellElements.length; i++) {
-            cells.push({cell: cellElements[i], value: cellElements[i].innerHTML, position: i});
+            cells.push({cell: cellElements[i], value: cellElements[i].innerHTML, matched: false, position: i});
             letters.push({value: inputs[i].id, matched: false,  position: i});
         }
 
@@ -40,10 +40,12 @@ export const formatTable = () => {
             if (letterMatch.regex === cellMatch.regex) {
                 if (letterMatch.match && cellMatch.match) {
                     cell.cell.classList.add("bull");
+                    cell.matched = true;
                     letter.matched = true;
                 } else {
                     if (letter.value === cell.value) {
                         cell.cell.classList.add("bull");
+                        cell.matched = true;
                         letter.matched = true;
                     }
                 }
@@ -53,30 +55,34 @@ export const formatTable = () => {
         for (let cell of cells) {
             let cellMatch = matchRegex(cell.value);
 
-            for (let letter of letters) {
-                if (!letter.matched) {
-                    let letterMatch = matchRegex(letter.value);
-
-                    if (letterMatch.regex === cellMatch.regex) {
-                        if (letterMatch.match && cellMatch.match) {
-                            cell.cell.classList.add("cow");
-                            letter.matched = true;
-                            break;
-                        } else {
-                            if (letter.value === cell.value) {
+            if (cell.matched) {
+                continue;
+            } else {
+                for (let letter of letters) {
+                    if (!letter.matched) {
+                        let letterMatch = matchRegex(letter.value);
+    
+                        if (letterMatch.regex === cellMatch.regex) {
+                            if (letterMatch.match && cellMatch.match) {
                                 cell.cell.classList.add("cow");
                                 letter.matched = true;
                                 break;
                             } else {
-                                continue;
+                                if (letter.value === cell.value) {
+                                    cell.cell.classList.add("cow");
+                                    letter.matched = true;
+                                    break;
+                                } else {
+                                    continue;
+                                }
                             }
+                        } else {
+                            continue;
                         }
                     } else {
-                        continue;
-                    }
-                } else {
-                    if (letter.position === cell.position) {
-                        break;
+                        if (letter.position === cell.position) {
+                            break;
+                        }
                     }
                 }
             }
