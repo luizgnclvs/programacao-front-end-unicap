@@ -12,7 +12,7 @@ function App() {
   const [pokemons, setPokemons] = useState(null);
 
   useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=12&offset=0')
+    fetch('https://pokeapi.co/api/v2/pokemon-species/')
       .then((response) => {
         if (!response.ok) {
           throw new Error(
@@ -30,6 +30,7 @@ function App() {
       .catch((error) => {
         setError(error.message);
         setData(null);
+        setPokemons(null);
       })
       .finally(() => {
         setLoading(false);
@@ -42,7 +43,6 @@ function App() {
       <Container className="">
         <Row className="justify-content-md-center">
           <Col>
-            <h1>Pokémons</h1>
             {loading && <div>Um momento, por favor...</div>}
             {error && (
               <div>{`Ocorrou um erro ao executar o fetch dos dados - ${error}`}</div>

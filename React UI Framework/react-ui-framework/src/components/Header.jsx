@@ -1,45 +1,55 @@
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';  
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useEffect, useState } from 'react';
 
 function Header() {
+  const [placeholder, setPlaceholder] = useState("Buscar");
+  let randomNum = Math.floor(Math.random() * (1154 + 1));
+
+  useEffect(() => {
+    fetch(`https://pokeapi.co/api/v2/pokemon-species/${randomNum}/`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Este é um erro HTTP: O status é ${response.status}`
+          );
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        let str = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+        setPlaceholder(str.replace(/-/g, " "));
+      })
+  }, [])
+
   return (
-    <Navbar bg="dark" variant="dark" className="m-2 rounded-2">
+    <Navbar bg="light" variant="light" className="m-2 mb-3 rounded-2">
       <Container>
-        <Navbar.Brand href="#home">Pokédex</Navbar.Brand>
-        <Navbar.Collapse>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <NavDropdown title="Type" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                Grass
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Fire
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Generation" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                I
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                II
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Region" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                Kanto
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Johto
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
+        <Navbar.Brand href="#home">
+          <img
+            alt="logo"
+            src="https://www.freepnglogos.com/uploads/pokemon-symbol-logo-png-31.png"
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+          />{' '}
+          Pokédex
+        </Navbar.Brand>
+        <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder={placeholder}
+              className="me-2"
+              aria-label="Search"
+            />
+            <Button variant="outline-success">Buscar</Button>
+          </Form> 
       </Container>
     </Navbar>
-  );
+  )
 }
 
 export default Header;
