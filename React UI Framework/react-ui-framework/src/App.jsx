@@ -1,74 +1,50 @@
 import { useEffect, useState } from 'react';
-import { Button, Container, Col, Row } from 'react-bootstrap';
-import './App.css';
+import { Button, Container } from 'react-bootstrap';
 import Header from './components/Header';
-import PokemonModel from './models/PokemonModel'
-
+import PokemonPage from './components/PokemonPage';
 
 function App() {
-  const [pokedex, setPokedex] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [pokedex, setPokedex] = useState(null);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon/")
-      .then(response => response.json())
-      .then((data) => {
-        for (const object of data.results) {
-          fetch(object.url)
-            .then(response => response.json())
-            .then((data) => {
-              fetch(data.species.url)
-                .then(response => response.json())
-                .then((newData) => {
-                  const pokemon = new PokemonModel(
-                    data.id,
-                    data.name,
-                    data.sprites.front_default,
-                    data.height,
-                    data.weight,
-                    data.types,
-                    newData.flavor_text_entries[0],
-                    data.abilities,
-                    newData.gender_rate,
-                    newData.capture_rate,
-                    newData.base_experience
-                  );
-
-                  setPokedex(a => [...a, pokemon]);
-                })
-            })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
         }
 
+        throw new Error(`Ocorreu um erro HTTP. O status da resposta é ${response.status}`)
+      })
+      .then((data) => {
+        setPokedex(data.results);
         setLoading(false);
-        setError(null);
       })
       .catch((error) => {
+        console.log(error);
+
         setError(error.message);
         setPokedex(null);
       })
-  }, [])
+  }, []);
 
   return (
     <>
       <Header fixed="top" className="m-2"/>
-      <Container className="">
-        <Row className="justify-content-md-center">
-          <Col>
-            {loading && <div>Um momento, por favor...</div>}
-            {error && (
-              <div>{`Ocorrou um erro ao executar o fetch dos dados - ${error}`}</div>
-            )}
-            <ul>
-              {pokedex &&
-                pokedex.map((pokemon, id) => (<li key={id}><span>{pokemon.name}</span></li>))
-              }
-            </ul>
-          </Col>
-        </Row>
+      <Container className="position-absolute top-50 start-50 translate-middle">
+        {isLoading && (
+          <div className="display-5 text-center">Um momento, por favor...</div>
+        )}
+        {error && (
+          <div className="display-5 text-center">Não foi possível executar o <code>fetch</code> dos dados - {`${error}`}</div>
+        )}
       </Container>
+      {pokedex && (
+        <PokemonPage pokemons={pokedex} />
+      )}
     </>
-  );
+  )
 }
 
 export default App;
