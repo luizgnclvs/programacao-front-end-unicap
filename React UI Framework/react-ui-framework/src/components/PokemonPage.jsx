@@ -69,13 +69,17 @@ function PokemonPage(props) {
           console.log(error);
         })
         .finally(() => {
-          setIsLoaded(false);
+          setTimeout(setIsLoaded(false), 1000)
+          
         });
     }
   }, [pokemonList]);
 
   return (
-    <CardGroup className="p-3 m-3 d-flex flex-column flex-wrap align-items-center">
+    <CardGroup className="p-3 m-0 d-flex flex-column flex-wrap align-items-center">
+      {isLoading && (
+        <div className="display-5 text-center">Um momento, por favor...</div>
+      )}
       {!isLoading &&
         pokemonEntries.map((pokemon, index) => (
             <PokemonCard key={index} pokemon={pokemon} />

@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import Header from './components/Header';
 import PokemonPage from './components/PokemonPage';
 
 function App() {
+  const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon/");
+  const [nextUrl, setNextUrl] = useState(null);
+  const [previousUrl, setPreviousUrl] = useState(null);
   const [pokedex, setPokedex] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon/")
+    fetch(url)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -19,6 +22,8 @@ function App() {
       })
       .then((data) => {
         setPokedex(data.results);
+        setNextUrl(data.next);
+        setPreviousUrl(data.previous);
         setLoading(false);
       })
       .catch((error) => {
@@ -27,7 +32,15 @@ function App() {
         setError(error.message);
         setPokedex(null);
       })
-  }, []);
+  }, [url]);
+
+  function handleNextClick() {
+    setUrl(nextUrl);
+  }
+
+  function handlePreviousClick() {
+    setUrl(previousUrl);
+  }
 
   return (
     <>
@@ -41,7 +54,13 @@ function App() {
         )}
       </Container>
       {pokedex && (
-        <PokemonPage pokemons={pokedex} />
+        <>
+          <Container fluid className="d-flex justify-content-center">
+            <Button variant="secondary" className="me-2" onClick={handlePreviousClick}>Previous</Button>
+            <Button variant="secondary" className="ms-2" onClick={handleNextClick}>Next</Button>
+          </Container>
+          <PokemonPage pokemons={pokedex} />
+        </>
       )}
     </>
   )
