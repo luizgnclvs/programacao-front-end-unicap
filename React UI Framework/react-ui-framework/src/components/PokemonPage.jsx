@@ -6,10 +6,11 @@ import PokemonCard from './PokemonCard';
 function PokemonPage(props) {
   const [pokemonEntries, setPokemonEntries] = useState([]);
   const [isLoading, setIsLoaded] = useState(true);
-  let entries = [];
   let pokemonList = props.pokemons;
 
   useEffect(() => {
+    let entries = [];
+
     for (const object of pokemonList) {
       fetch(object.url)
         .then((response) => {
@@ -71,7 +72,7 @@ function PokemonPage(props) {
           setIsLoaded(false);
         });
     }
-  }, []);
+  }, [pokemonList]);
 
   return (
     <CardGroup className="p-3 m-3 d-flex flex-column flex-wrap align-items-center">
