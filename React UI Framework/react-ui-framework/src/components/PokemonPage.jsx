@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CardGroup, Col, Container, Row } from 'react-bootstrap';
+import { CardGroup } from 'react-bootstrap';
 import PokemonModel from '../models/PokemonModel';
 import PokemonCard from './PokemonCard';
 

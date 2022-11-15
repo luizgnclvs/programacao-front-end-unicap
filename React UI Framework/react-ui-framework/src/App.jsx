@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Header from './components/Header';
 import PokemonPage from './components/PokemonPage';
 
