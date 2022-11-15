@@ -31,7 +31,7 @@ function Header() {
         <Navbar.Brand href="#home">
           <img
             alt="logo"
-            src="https://www.freepnglogos.com/uploads/pokemon-symbol-logo-png-31.png"
+            src="https://www.blackoutpixelmon.xyz/ball.svg"
             width="30"
             height="30"
             className="d-inline-block align-top"
