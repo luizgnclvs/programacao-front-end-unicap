@@ -5,6 +5,7 @@ import PokemonCard from './PokemonCard';
 
 function PokemonPage(props) {
   const [pokemonEntries, setPokemonEntries] = useState([]);
+  const [isLoading, setIsLoaded] = useState(true);
   let entries = [];
   let pokemonList = props.pokemons;
 
@@ -63,12 +64,18 @@ function PokemonPage(props) {
               setPokemonEntries(entries)
             })
         })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoaded(false);
+        });
     }
   }, []);
 
   return (
     <CardGroup className="p-3 m-3 d-flex flex-column flex-wrap align-items-center">
-      {pokemonEntries &&
+      {!isLoading &&
         pokemonEntries.map((pokemon, index) => (
             <PokemonCard key={index} pokemon={pokemon} />
       ))}
