@@ -1,67 +1,80 @@
-import { useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { CardGroup, Col, Container, Row } from 'react-bootstrap';
 import PokemonModel from '../models/PokemonModel';
-import PokemonRow from './PokemonRow';
+import PokemonCard from './PokemonCard';
 
-async function PokemonPage(props) {
-  async function fetchPokemon (object) {
-    let response1 = await fetch(object.url);
+function PokemonPage(props) {
+  const [pokemonEntries, setPokemonEntries] = useState([]);
+  let entries = [];
+  let pokemonList = props.pokemons;
 
-    if (!response1.ok) {
-      throw new Error(`Ocorreu um erro HTTP. O status da resposta é ${response1.status}`);
+  useEffect(() => {
+    for (const object of pokemonList) {
+      fetch(object.url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Ocorreu um erro HTTP. O status da resposta é ${response.status}`);
+          }
+
+          return response.json();
+        })
+        .then((pokemonData) => {
+          fetch(pokemonData.species.url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`Ocorreu um erro HTTP. O status da resposta é ${response.status}`);
+              }
+
+              return response.json();
+            })
+            .then((speciesData) => {
+              const flavorTextObject = speciesData.flavor_text_entries.find(entry => entry.language.name === "en");
+              const originalNameObject = speciesData.names.find(entry => entry.language.name === "ja-Hrkt");
+
+              let flavorText = flavorTextObject.flavor_text;
+              let originalName = originalNameObject.name;
+
+              flavorText = flavorText.replace(/\n/g, "\n");
+              flavorText = flavorText.replace(/\f/g, "\n");
+
+              const pokemon = new PokemonModel(
+                pokemonData.id,
+                pokemonData.name,
+                pokemonData.sprites.front_default,
+                pokemonData.height,
+                pokemonData.weight,
+                pokemonData.types,
+                originalName,
+                flavorText,
+                pokemonData.abilities,
+                pokemonData.base_experience
+              );
+
+              let element = entries.find(entry => entry.id === pokemon.id);
+
+              if (element === undefined && entries.length < 20) {
+                entries.push(pokemon);
+
+                entries.sort((a, b) => {
+                  return a.id - b.id;
+                });
+              }
+
+              setPokemonEntries(entries)
+            })
+        })
     }
-
-    let data1 = await response1.json();
-
-    let response2 = await fetch(data1.species.url);
-
-    if (!response2.ok) {
-      throw new Error(`Ocorreu um erro HTTP. O status da resposta é ${response2.status}`);
-    }
-
-    let data2 = await response2.json();
-
-    const id = data1.id;
-    const name = data1.name;
-    const img = data1.sprites.front_default;
-    const height = data1.height;
-    const weight = data1.weight;
-    const types = data1.types;
-    const originalName = data2.names[0].name;
-    const flavorText = data2.flavor_text_entries[0].flavor_text;
-    const abilities = data1.abilities;
-    const baseExperience = data1.base_experience;
-
-    const pokemon = new PokemonModel(id, name, img, height, weight, types, originalName, flavorText, abilities, baseExperience);
-    return pokemon;
-  }
-
-  function sliceIntoChunks(array, chunkSize) {
-      const chunks = [];
-      for (let i = 0; i < array.length; i += chunkSize) {
-          const chunk = array.slice(i, i + chunkSize);
-          chunks.push(chunk);
-      }
-      return chunks;
-  }
-
-  let list = props.pokemons;
-  let pokemons = [];
-
-  for (const object of list) {
-    let pokemon = await fetchPokemon(object);
-    pokemons.push(pokemon)
-  }
-
-  let rows = sliceIntoChunks(pokemons, 4);
-  console.log(rows);
+  }, []);
 
   return (
-    <Container className="p-3 m-3">
-      {rows.map((row, index) => (
-        <PokemonRow key={index} pokemons={row}></PokemonRow>
-      ))}
-    </Container>
+    <CardGroup className="p-3 m-3 d-flex flex-column flex-wrap">
+      {pokemonEntries &&
+        pokemonEntries.map((pokemon, index) => {
+          console.log(pokemon)
+          return (
+            <PokemonCard key={index} pokemon={pokemon} />
+      )})}
+    </CardGroup>
   );
 }
 
