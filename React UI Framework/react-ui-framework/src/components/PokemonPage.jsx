@@ -67,13 +67,11 @@ function PokemonPage(props) {
   }, []);
 
   return (
-    <CardGroup className="p-3 m-3 d-flex flex-column flex-wrap">
+    <CardGroup className="p-3 m-3 d-flex flex-column flex-wrap align-items-center">
       {pokemonEntries &&
-        pokemonEntries.map((pokemon, index) => {
-          console.log(pokemon)
-          return (
+        pokemonEntries.map((pokemon, index) => (
             <PokemonCard key={index} pokemon={pokemon} />
-      )})}
+      ))}
     </CardGroup>
   );
 }

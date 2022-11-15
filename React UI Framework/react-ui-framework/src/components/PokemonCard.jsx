@@ -4,7 +4,7 @@ function PokemonCard(props) {
   let pokemon = props.pokemon;
 
   return (
-    <Card className="text-center vw-15 h-auto m-4" border="light" bg="light" variant="light">
+    <Card className="text-center w-50 p-2 h-auto m-4" border="light" bg="light" variant="light">
       <Card.Header className="d-flex justify-content-between p-4">
         <Container className="d-flex align-items-center">
           <span className="pe-2 h3 m-0">{pokemon.name.toUpperCase()}</span> • 
