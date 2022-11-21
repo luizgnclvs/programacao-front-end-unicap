@@ -69,7 +69,7 @@ function PokemonPage(props) {
           console.log(error);
         })
         .finally(() => {
-          setTimeout(setIsLoaded(false), 1000)
+          setTimeout(setIsLoaded(false), 10000)
           
         });
     }

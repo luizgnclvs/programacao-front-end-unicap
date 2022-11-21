@@ -4,7 +4,7 @@ import Header from './components/Header';
 import PokemonPage from './components/PokemonPage';
 
 function App() {
-  const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon/");
+  const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon?limit=5");
   const [nextUrl, setNextUrl] = useState(null);
   const [previousUrl, setPreviousUrl] = useState(null);
   const [pokedex, setPokedex] = useState(null);
@@ -56,8 +56,8 @@ function App() {
       {pokedex && (
         <>
           <Container fluid className="d-flex justify-content-center">
-            <Button variant="secondary" className="me-2" onClick={handlePreviousClick}>Previous</Button>
-            <Button variant="secondary" className="ms-2" onClick={handleNextClick}>Next</Button>
+            {previousUrl ? <Button variant="secondary" className="me-2" onClick={handlePreviousClick}>Previous</Button> : <Button variant="secondary" className="me-2" disabled>Previous</Button>}
+            {nextUrl ? <Button variant="secondary" className="ms-2" onClick={handleNextClick}>Next</Button> : <Button variant="secondary" className="me-2" disabled>Next</Button>}
           </Container>
           <PokemonPage pokemons={pokedex} />
         </>
