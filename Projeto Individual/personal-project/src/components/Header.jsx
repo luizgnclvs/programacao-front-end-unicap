@@ -1,15 +1,24 @@
+import { useNavigate } from "react-router-dom";
 import useRandomPokemon from "../services/getRandomPokemon";
 import { Button, Navbar } from "flowbite-react";
 
 export default function Header() {
+  const navigate = useNavigate();
   const fetch = useRandomPokemon(state => state.fetch)
+
+  function handleClick() {
+    navigate("/");
+    fetch();
+  }
 
   return (
     <Navbar
       fluid={true}
       rounded={true}
     >
-      <Navbar.Brand>
+      <Navbar.Brand
+        href="/"
+      >
         <img
           src="https://www.freepnglogos.com/uploads/pokemon-symbol-logo-png-31.png"
           className="mr-3 h-6 sm:h-9"
@@ -20,19 +29,11 @@ export default function Header() {
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2">
-        <Button onClick={() => {fetch()}}>
+        <Button onClick={handleClick}>
           Randomize!
         </Button>
         <Navbar.Toggle />
       </div>
-      <Navbar.Collapse>
-        <Navbar.Link href="/navbars" active={true}>
-          Pokémon
-        </Navbar.Link>
-        <Navbar.Link href="/navbars">
-          Berries
-        </Navbar.Link>  
-      </Navbar.Collapse>
     </Navbar>
   );
 }

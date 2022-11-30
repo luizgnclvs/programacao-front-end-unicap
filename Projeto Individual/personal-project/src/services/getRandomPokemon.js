@@ -1,5 +1,4 @@
 import create from "zustand";
-import persist from "zustand/middleware";
 
 let randomPokemon = (set) => ({
     pokemon: undefined,
@@ -24,8 +23,6 @@ let randomPokemon = (set) => ({
         set({ pokemon: pokemons });
     },
 });
-
-// randomPokemon = persist(randomPokemon, {name: pokemon})
 
 const useRandomPokemon = create(randomPokemon);
 

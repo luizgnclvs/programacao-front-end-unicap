@@ -1,5 +1,5 @@
 import useRandomPokemon from "../services/getRandomPokemon";
-import PokemonCard from "./PokemonCard";
+import PokemonCard from "../components/PokemonCard";
 
 export default function RandomPokemon() {
   const pokemons = useRandomPokemon(state => state.pokemon);
