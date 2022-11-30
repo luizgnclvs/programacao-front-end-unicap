@@ -5,6 +5,7 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
+import RandomPokemon from "./components/RandomPokemon";
 import "./index.css";
 import Root from "./routes/Root";
 
@@ -12,6 +13,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root/>,
+    children: [
+      {
+        path: "",
+        element: <RandomPokemon />
+      }
+    ],
   },
 ]);
 
