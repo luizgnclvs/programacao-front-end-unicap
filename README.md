@@ -4,5 +4,6 @@ Exercícios propostos pelo professor ao decorrer da disciplina de Programação 
 
 ### Índice
 
-- Jogo de Senha ---> [DEPLOY](https://password-game.vercel.app/)
-- React UI Framework ---> [DEPLOY](https://react-ui-framework-iota.vercel.app/)
+- Jogo de Senha [[DEPLOY](https://password-game.vercel.app/) | [REPO](https://github.com/luizgnclvs/programacao-front-end-unicap/tree/main/Jogo%20de%20Senha)]
+- React UI Framework [[DEPLOY](https://react-ui-framework-gamma.vercel.app/) | [REPO](https://github.com/luizgnclvs/programacao-front-end-unicap/tree/main/React%20UI%20Framework)] 
+- Projeto Individual [[DEPLOY](https://pokedex-tau-indol.vercel.app/) | [REPO](https://github.com/luizgnclvs/programacao-front-end-unicap/tree/main/Projeto%20Individual)]
