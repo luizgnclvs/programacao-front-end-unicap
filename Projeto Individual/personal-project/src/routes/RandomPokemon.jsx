@@ -1,9 +1,9 @@
-import useRandomPokemon from "../services/getRandomPokemon";
+import usePokemonStore from "../stores/usePokemonStore";
 import PokemonCard from "../components/PokemonCard";
 
 export default function RandomPokemon() {
-  const pokemons = useRandomPokemon(state => state.pokemon);
-  const fetch = useRandomPokemon(state => state.fetch)
+  const pokemons = usePokemonStore(state => state.pokemon);
+  const fetch = usePokemonStore(state => state.fetch)
 
   if (pokemons === undefined) {
     fetch();

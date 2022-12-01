@@ -47,15 +47,15 @@ export default function PokemonCard(props) {
   }
 
   return (
-    <div className="max-w-sm">
-      <Card className="my-5">
+    <div className="max-w-sm mx-2 mb-3 h-full min-h-full">
+      <Card className="mt-3">
         <SpritesCarousel sprites={pokemon.sprites} />
         <h5 className="flex justify-evenly text-2xl text-center align-middle py-1 px-3 text-white font-bold rounded bg-slate-300">
           <span>{name}</span>
           <span># {pokemon.id}</span>
         </h5>
         <div className="flex flex-col gap-3">
-          <span className="text-center align-middle font-bold text-lg">Type</span>
+          <span className="text-center align-middle font-bold text-lg dark:text-white">Type</span>
           <div className="flex justify-evenly capitalize">
             {pokemonType.map((type, id) =>
               (<span key={id} className={type.style}>{type.name}</span>)
@@ -63,7 +63,7 @@ export default function PokemonCard(props) {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <span className="text-center align-middle font-bold text-lg">Abilities</span>
+          <span className="text-center align-middle font-bold text-lg dark:text-white">Abilities</span>
           <div className="flex justify-evenly flex-wrap gap-2">
             {pokemonAbilities.map((ability, id) =>
               (<span key={id} className="text-center align-middle py-1 px-3 text-white font-bold rounded bg-slate-300" >{ability}</span>)
@@ -71,7 +71,7 @@ export default function PokemonCard(props) {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-x-8 gap-y-2 mt-2">
-          <span className="col-span-2 text-center align-middle font-bold text-lg">Info</span>
+          <span className="col-span-2 text-center align-middle font-bold text-lg dark:text-white">Info</span>
           <span className="text-center align-middle py-1 px-3 text-white font-bold rounded bg-slate-300" >Height</span>
           <span className="text-center align-middle py-1 px-3 text-white font-bold rounded bg-slate-300" >{pokemon.height / 10}m</span>
           <span className="text-center align-middle py-1 px-3 text-white font-bold rounded bg-slate-300" >Weight</span>

@@ -4,7 +4,7 @@ import SideMenu from "../components/SideMenu";
 
 export default function Root() {
   return (
-    <div id="body">
+    <div id="body" className="dark:bg-slate-500">
       <div id="header">
         <Header />
       </div>

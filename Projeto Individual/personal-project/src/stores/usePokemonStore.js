@@ -1,6 +1,6 @@
 import create from "zustand";
 
-let randomPokemon = (set) => ({
+let pokemonStore = (set) => ({
     pokemon: undefined,
     fetch: async () => {
         let id = Math.floor(Math.random() * 902) + 1;
@@ -24,6 +24,6 @@ let randomPokemon = (set) => ({
     },
 });
 
-const useRandomPokemon = create(randomPokemon);
+const usePokemon = create(pokemonStore);
 
-export default useRandomPokemon;
+export default usePokemon;

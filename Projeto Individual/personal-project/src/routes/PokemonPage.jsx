@@ -21,8 +21,8 @@ export default function PokemonPage() {
   const pokemons = useLoaderData();
 
   return (
-    <div className="grid grid-cols-3 gap-2">
-      {pokemons && 
+    <div className="grid grid-cols-3">
+      {pokemons &&
         pokemons.map((pokemon, id) => (
           <PokemonCard pokemon={pokemon} key={id} />
       ))}
